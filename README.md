@@ -50,5 +50,5 @@ python tools/generate_pcap_only_lab.py --seed 1337 --noise high --duration 3600 
 ```
 - High-noise + stealth decoys:
 ```bash
-High-noise + stealth decoys:
+python tools/generate_pcap_only_lab.py --seed 1337 --noise high --duration 3600 --stealth --output lab_1337_stealth
 ```
