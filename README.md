@@ -43,9 +43,12 @@ pip install -r requirements.txt
 - Run with a seed (required):
 ```bash
 python tools/generate_pcap_only_lab.py --seed 1337 --output lab_1337
+```
 - High-noise + long capture window:
 ```bash
 python tools/generate_pcap_only_lab.py --seed 1337 --noise high --duration 3600 --output lab_1337
+```
 - High-noise + stealth decoys:
 ```bash
 High-noise + stealth decoys:
+```
