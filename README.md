@@ -38,7 +38,7 @@ Each run produces:
 Install:
 ```bash
 pip install -r requirements.txt
-
+```
 ## Example Usage
 - Run with a seed (required):
 ```bash
