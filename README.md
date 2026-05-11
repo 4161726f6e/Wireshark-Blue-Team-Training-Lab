@@ -39,7 +39,7 @@ Install:
 ```bash
 pip install -r requirements.txt
 
-# Example Usage
+## Example Usage
 - Run with a seed (required):
 ```bash
 python tools/generate_pcap_only_lab.py --seed 1337 --output lab_1337
