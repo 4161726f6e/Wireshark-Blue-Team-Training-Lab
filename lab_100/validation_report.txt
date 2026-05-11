@@ -1,0 +1,12 @@
+Q1: PASS - unique POST-to-phish host (hosts=1)
+Q2: PASS - phishing domain in DNS queries
+Q3: PASS - credential POST URI present
+Q4: PASS - C2 TLS-record packets >= 8 (got 19)
+Q5: PASS - payload domain appears in TLS SNI
+Q6: PASS - payload file requested via HTTP GET
+Q7: PASS - SMB/445 packets to lateral target (got 6)
+Q8: PASS - exfil dst is top bytes destination (top=188.104.171.59)
+Q9: PASS - DNS-only suspicious domain (no HTTP/TLS follow-on)
+Q10: PASS - TLS-record packets between compromised and exfil (got 221)
+
+OVERALL: PASS

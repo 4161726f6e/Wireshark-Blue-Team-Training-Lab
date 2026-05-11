@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-05-11T15:47:15Z",
+  "seed": 100,
+  "noise": "high",
+  "duration_seconds": 3600,
+  "stealth": false,
+  "scenario": {
+    "seed": 100,
+    "nets": {
+      "internal": "10.0.1.",
+      "server": "10.0.2."
+    },
+    "compromised": "10.0.1.29",
+    "internal_noise_hosts": [
+      "10.0.1.68",
+      "10.0.1.68",
+      "10.0.1.108",
+      "10.0.1.32",
+      "10.0.1.100",
+      "10.0.1.60",
+      "10.0.1.103",
+      "10.0.1.54",
+      "10.0.1.65",
+      "10.0.1.74",
+      "10.0.1.24",
+      "10.0.1.78",
+      "10.0.1.25",
+      "10.0.1.20"
+    ],
+    "lateral_target": "10.0.2.57",
+    "c2_ip": "139.134.24.169",
+    "exfil_ip": "188.104.171.59",
+    "payload_ip": "102.104.91.37",
+    "phish_ip": "71.177.189.161",
+    "phish_domain": "signin-auth-portal.com",
+    "credential_uri": "/session/create",
+    "payload_domain": "assets-verify-delivery.com",
+    "payload_file": "chrome_update.exe",
+    "failed_domain_q9": "telemetry-security-check.net",
+    "failed1_domain": "cdn-patch-upgrade.net",
+    "failed2_domain": "cdn-delivery-upgrade.net",
+    "failed3_target": "10.0.2.86",
+    "protocol_exfil": "tls",
+    "decoys": {
+      "decoy_bulk_ip": "60.83.98.43",
+      "decoy_bulk_sni": "backup-update-sync.example",
+      "decoy_post_host": "auth-idp-portal.example"
+    }
+  },
+  "answers": {
+    "Q1": "ip:10.0.1.29",
+    "Q2": "domain:signin-auth-portal.com",
+    "Q3": "uri:/session/create",
+    "Q4": "ip:139.134.24.169",
+    "Q5": "domain:assets-verify-delivery.com",
+    "Q6": "file:chrome_update.exe",
+    "Q7": "ip:10.0.2.57",
+    "Q8": "ip:188.104.171.59",
+    "Q9": "domain:telemetry-security-check.net",
+    "Q10": "proto:tls"
+  },
+  "points": {
+    "Q1": 25,
+    "Q2": 25,
+    "Q3": 40,
+    "Q4": 50,
+    "Q5": 50,
+    "Q6": 60,
+    "Q7": 60,
+    "Q8": 70,
+    "Q9": 60,
+    "Q10": 60
+  },
+  "requires": {
+    "python": "3.9+",
+    "scapy": "latest",
+    "scapy_tls_layer": false
+  }
+}

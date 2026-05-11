@@ -1,0 +1,129 @@
+Challenge 1 (Points 25):
+Which internal host was compromised during this capture?
+
+Flag format: ip:x.x.x.x
+
+Wireshark guide:
+1) Open the PCAP.
+2) Apply a web filter: http (or tcp.port == 80 if needed).
+3) Statistics → Endpoints → IPv4; check “Limit to display filter”.
+4) Identify the internal IP that dominates suspicious web traffic.
+5) Cross-check via Statistics → Conversations (TCP) to confirm it is central to suspicious web conversations.
+
+----------------------------------------------------------------------
+
+Challenge 2 (Points 25):
+Which domain was used for the initial phishing attempt?
+
+Flag format: domain:example.com
+
+Wireshark guide:
+1) Filter DNS: dns
+2) Show queries only: dns.flags.response == 0
+3) Pivot to the compromised host (from Q1): ip.src == <compromised>
+4) Inspect dns.qry.name and identify the rare, login-like domain associated with the start of the successful chain.
+
+----------------------------------------------------------------------
+
+Challenge 3 (Points 40):
+What URI path was used to submit credentials?
+
+Flag format: uri:/path
+
+Wireshark guide:
+1) Filter HTTP POSTs: http.request.method == "POST"
+2) Narrow to the compromised host if needed: ip.src == <compromised>
+3) Select the relevant POST and use Follow → TCP Stream.
+4) Extract the URI path from the request line (between method and HTTP version).
+
+----------------------------------------------------------------------
+
+Challenge 4 (Points 50):
+What external IP acted as the command-and-control server?
+
+Flag format: ip:x.x.x.x
+
+Wireshark guide:
+1) Filter to the compromised host’s TCP traffic: ip.addr == <compromised> && tcp
+2) Statistics → Conversations (TCP). Sort by packets/duration.
+3) Identify repeated outbound communications (beacon-like).
+4) Validate by isolating the stream and confirming repeated traffic to the same external IP.
+
+----------------------------------------------------------------------
+
+Challenge 5 (Points 50):
+What domain hosted the payload downloaded by the attacker?
+
+Flag format: domain:example.com
+
+Wireshark guide:
+1) Filter TLS ClientHello: tls.handshake.type == 1
+2) Locate the handshake associated with the payload stage (after initial compromise/beaconing).
+3) Inspect TLS → Extensions → server_name (SNI).
+4) Extract the hostname from SNI (domain only).
+
+----------------------------------------------------------------------
+
+Challenge 6 (Points 60):
+What file was downloaded by the attacker?
+
+Flag format: file:filename.ext
+
+Wireshark guide:
+1) Filter HTTP GET: http.request.method == "GET"
+2) Correlate to suspicious host activity.
+3) Use File → Export Objects → HTTP to list objects transferred.
+4) Identify the suspicious executable-like filename requested/downloaded.
+
+----------------------------------------------------------------------
+
+Challenge 7 (Points 60):
+Which internal system was targeted via lateral movement?
+
+Flag format: ip:x.x.x.x
+
+Wireshark guide:
+1) Filter SMB-related traffic: tcp.port == 445 (or smb2)
+2) Narrow to traffic initiated by the compromised host: ip.src == <compromised>
+3) Use Statistics → Conversations (TCP) to identify the internal destination contacted on 445.
+
+----------------------------------------------------------------------
+
+Challenge 8 (Points 70):
+Which external IP received exfiltrated data?
+
+Flag format: ip:x.x.x.x
+
+Wireshark guide:
+1) Filter to the compromised host: ip.addr == <compromised>
+2) Statistics → Conversations (TCP/IPv4). Sort by Bytes.
+3) Identify the largest sustained outbound transfer to an external IP.
+4) Optionally confirm with I/O Graphs (Bits/s) filtered to that conversation.
+
+----------------------------------------------------------------------
+
+Challenge 9 (Points 60):
+Which suspicious domain appears in DNS but did NOT lead to a successful attack chain?
+
+Flag format: domain:example.com
+
+Wireshark guide:
+1) Filter DNS queries: dns.flags.response == 0
+2) Identify suspicious domains.
+3) For a candidate domain, verify there is no meaningful follow-on (no payload download, no beaconing, no lateral movement).
+4) Use Find Packet (Ctrl+F) string search to locate the domain quickly, then validate lack of progression.
+
+----------------------------------------------------------------------
+
+Challenge 10 (Points 60):
+What protocol was used for data exfiltration?
+
+Flag format: proto:protocol
+
+Wireshark guide:
+1) Filter the exfil conversation: ip.addr == <compromised> && ip.addr == <exfil IP>
+2) Statistics → Protocol Hierarchy to identify dominant protocol in the filtered flow.
+3) Confirm via the Protocol column and packet details within the exfil stream.
+
+----------------------------------------------------------------------
+

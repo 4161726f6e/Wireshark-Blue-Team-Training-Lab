@@ -1,0 +1,50 @@
+Q1 Hints:
+  - Cost 5: Start with HTTP filtering, then use Statistics → Endpoints (IPv4) with 'Limit to display filter'.
+  - Cost 10: Compare Endpoints and Conversations (TCP) to find the central suspicious internal talker.
+  - Cost 15: The compromised host is the only one performing the phishing POST. Use that as a uniqueness check.
+
+Q2 Hints:
+  - Cost 5: Pivot to DNS queries from the compromised host; phishing domains are rare and login-like.
+  - Cost 10: Use dns.flags.response==0 and inspect dns.qry.name values.
+  - Cost 15: Look for the domain queried immediately before the credential POST begins.
+
+Q3 Hints:
+  - Cost 5: Credential submission is typically an HTTP POST.
+  - Cost 10: Filter POSTs and Follow → TCP Stream to view the request line.
+  - Cost 15: Extract the URI path between the method and HTTP version.
+
+Q4 Hints:
+  - Cost 5: Beaconing often looks like repeated outbound TLS-sized blobs to one external IP.
+  - Cost 10: Use Conversations sorted by packets/duration to find repeatable external comms.
+  - Cost 15: Confirm the same internal host repeatedly contacts the same external IP on 443.
+
+Q5 Hints:
+  - Cost 5: SNI is visible in ClientHello and is not encrypted.
+  - Cost 10: Filter tls.handshake.type==1 and inspect Server Name extension.
+  - Cost 15: Use tls.handshake.extensions_server_name to extract the payload host.
+
+Q6 Hints:
+  - Cost 5: Payloads often show up as HTTP GET requests for executable-looking paths.
+  - Cost 10: Use File → Export Objects → HTTP to view extracted filenames.
+  - Cost 15: Focus on the GETs to the payload host and pick the executable-like filename.
+
+Q7 Hints:
+  - Cost 5: Lateral movement commonly uses SMB on TCP/445.
+  - Cost 10: Filter tcp.port==445 and isolate traffic initiated by the compromised host.
+  - Cost 15: Use Conversations under that filter to identify the internal destination.
+
+Q8 Hints:
+  - Cost 5: Exfiltration often appears as the largest sustained outbound transfer.
+  - Cost 10: Use Conversations sorted by bytes from the compromised host.
+  - Cost 15: There is a decoy bulk transfer in stealth mode; the real exfil is still the largest from the compromised host.
+
+Q9 Hints:
+  - Cost 5: A failed chain can have DNS activity with no follow-on sessions.
+  - Cost 10: Find a suspicious domain in DNS not followed by HTTP/TLS sessions.
+  - Cost 15: Use Find Packet string search to locate the domain, then verify no progression.
+
+Q10 Hints:
+  - Cost 5: Determine protocol from evidence in the exfil flow.
+  - Cost 10: Filter the exfil conversation and check Protocol Hierarchy.
+  - Cost 15: The exfil stream uses TLS record types; confirm via TLS dissection in Wireshark.
+
